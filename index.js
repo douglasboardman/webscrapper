@@ -9,7 +9,7 @@ const ITEM_URL =
   "https://www2.comprasnet.gov.br/siasgnet-atasrp/public/visualizarItemSRP.do?method=iniciar&itemAtaSRP.codigoItemAtaSRP=";
 const uasg = "158127";
 const modCompra = "5";
-const numCompra = "90004";
+const numCompra = "90056";
 const anoCompra = "2024";
 const participante = "IFFar - Campus Uruguaiana"
 
@@ -41,8 +41,8 @@ var listaCodItens = [];
 var itensUnidade = [];
 var vigencia = {
   vigenciaPublicada: true,
-  dataIniVigencia: "08/10/2024",
-  dataFimVigencia: "08/10/2025"
+  dataIniVigencia: "30/04/2025",
+  dataFimVigencia: "30/04/2026"
 };
 
 const requestHeaders = {
@@ -193,7 +193,7 @@ async function getData(url) {
     headless: "new",
   });
   const page = await browser.newPage();
-  await page.goto(url, { waitUntil: "networkidle0" });
+  await page.goto(url, { waitUntil: "networkidle0", timeout: 0});
   const data = await page.content();
   await browser.close();
   return data;
