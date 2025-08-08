@@ -7,11 +7,88 @@ const fs = require("fs");
 const BASE_URL = "https://www2.comprasnet.gov.br/siasgnet-atasrp/public/";
 const ITEM_URL =
   "https://www2.comprasnet.gov.br/siasgnet-atasrp/public/visualizarItemSRP.do?method=iniciar&itemAtaSRP.codigoItemAtaSRP=";
-const uasg = "158127";
+const participantes = [
+  {
+    id: "alegrete",
+    uasg: "158267",
+    localEntrega: "85073 - Alegrete/RS",
+    localidade: "Alegrete/RS",
+    nomeParticipante: "IFFar - Campus Alegrete",
+  },
+  {
+    id: "frederico_westphalen",
+    uasg: "155570",
+    localEntrega: "86673 - Frederico Westphalen/RS",
+    localidade: "Frederico Westphalen/RS",
+    nomeParticipante: "IFFar - Campus Frederico Westphalen",
+  },
+  {
+    id: "jaguari",
+    uasg: "154628",
+    localEntrega: "87238 - Jaguari/RS",
+    localidade: "Jaguari/RS",
+    nomeParticipante: "IFFar - Campus Jaguari",
+  },
+  {
+    id: "julio_de_castilhos",
+    uasg: "158269",
+    localEntrega: "87254 - Júlio de Castilhos/RS",
+    localidade: "Júlio de Castilhos/RS",
+    nomeParticipante: "IFFar - Campus Júlio de Castilhos",
+  },
+  {
+    id: "panambi",
+    uasg: "158505",
+    localEntrega: "87815 - Panambi/RS",
+    localidade: "Panambi/RS",
+    nomeParticipante: "IFFar - Campus Panambi",
+  },
+  {
+    id: "santa_rosa",
+    uasg: "158504",
+    localEntrega: "88471 - Santa Rosa/RS",
+    localidade: "Santa Rosa/RS",
+    nomeParticipante: "IFFar - Campus Santa Rosa",
+  },
+  {
+    id: "santo_angelo",
+    uasg: "155081",
+    localEntrega: "88536 - Santo Ângelo/RS",
+    localidade: "Santo Ângelo/RS",
+    nomeParticipante: "IFFar - Campus Santo Ângelo",
+  },
+  {
+    id: "santo_augusto",
+    uasg: "158266",
+    localEntrega: "88595 - Santo Augusto/RS",
+    localidade: "Santo Augusto/RS",
+    nomeParticipante: "IFFar - Campus Santo Augusto",
+  },
+  {
+    id: "sao_vicente_do_sul",
+    uasg: "158268",
+    localEntrega: "86754 - São Vicente do Sul/RS",
+    localidade: "São Vicente do Sul/RS",
+    nomeParticipante: "IFFar - Campus São Vicente do Sul",
+  },
+  {
+    id: "uruguaiana",
+    uasg: "157363",
+    localEntrega: "89516 - Uruguaiana/RS",
+    localidade: "Uruguaiana/RS",
+    nomeParticipante: "IFFar - Campus Uruguaiana",
+  },
+];
+
+const idParticipante = "panambi";
+const uasgGestora = "158127";
 const modCompra = "5";
-const numCompra = "90056";
+const numCompra = "90011";
 const anoCompra = "2024";
-const participante = "IFFar - Campus Uruguaiana"
+const valIni = "30/04/2025";
+const valFim = "30/04/2026";
+
+const participante = participantes.filter((p) => p.id == idParticipante)[0];
 
 const camposFornecMaterial = [
   "classificação",
@@ -41,8 +118,8 @@ var listaCodItens = [];
 var itensUnidade = [];
 var vigencia = {
   vigenciaPublicada: true,
-  dataIniVigencia: "30/04/2025",
-  dataFimVigencia: "30/04/2026"
+  dataIniVigencia: valIni,
+  dataFimVigencia: valFim,
 };
 
 const requestHeaders = {
@@ -51,12 +128,7 @@ const requestHeaders = {
   "Accept-Language": "en-US,en;q=0.5",
   "Accept-Encoding": "gzip, deflate, br",
   Connection: "keep-alive",
-  Cookie:
-    "JSESSIONID=5A48955AECEEDE50083AD4BF9E39E05B.siasgnet2; ss_lbappSIASGNETSIASGNETWSREST=1.siasgnet2; ss_lbappSIASGNETSP=1.siasgnet2; ss_lbappSIASGNETCENTRALCOMPRAS=1.siasgnet2; ss_lbappSIASGNETDC=1.siasgnet2; ss_lbappSIASGNETADMIN=1.siasgnet2; ss_lbappSIASGNETJBOSSWS=1.siasgnet2; ss_lbappSIASGNETWSCOMPRAS=1.siasgnet2; ss_lbappSIASGNETWSEXT=1.siasgnet2; ss_lbappSIASGNETRDCDC=1.siasgnet2; ss_lbappSIASGNETRDCSP=1.siasgnet2; ss_lbappSIASGNETRDCIRP=1.siasgnet2; ss_lbappSIASGNETRDCPRESENCIAL=1.siasgnet2; ss_lbappSIASGNETATASRP=1.siasgnet2; ss_lbappSIASGNETIRP=1.siasgnet2; ss_lbappSIASGNETPUBLICADOR=1.siasgnet2; ss_lbappSIASGNET=1.siasgnet2",
-  "Upgrade-Insecure-Requests": "1",
-  "Sec-Fetch-Dest": "document",
-  "Sec-Fetch-Mode": "navigate",
-  "Sec-Fetch-Site": "cross-site",
+  Cookie: "JSESSIONID=8C0FBE49196D053F6343A87B3953BCD5.siasgnet3",
 };
 
 const agent = new https.Agent({
@@ -70,7 +142,7 @@ const axiosOptions = {
 
 const path =
   "pesquisarItemSRP.do?method=iniciar&parametro.identificacaoCompra.numeroUasg=" +
-  uasg +
+  uasgGestora +
   "&parametro.identificacaoCompra.modalidadeCompra=" +
   modCompra +
   "&parametro.identificacaoCompra.numeroCompra=" +
@@ -120,24 +192,39 @@ getPage(path)
     numItens = $('[name="cabecalhoLicitacaoSRP.quantidadeItens"]').attr(
       "value"
     );
-    numPaginas = Math.ceil(numItens / 20);  // Correção aqui
+    numPaginas = Math.ceil(numItens / 20); // Correção aqui
     console.log(
-      "Pregão: " + numCompra + "/" + anoCompra + "\n" +
-      "UASG Gestora: " + uasg + "\n" +
-      "Participante: " + participante + "\n" +
-      "Total de itens do pregão: " + numItens + "\n" +
-      "\nTotal de páginas de exibição: " + numPaginas
+      "Pregão: " +
+        numCompra +
+        "/" +
+        anoCompra +
+        "\n" +
+        "UASG Gestora: " +
+        uasgGestora +
+        "\n" +
+        "Participante: " +
+        participante.nomeParticipante +
+        "\n" +
+        "Total de itens do pregão: " +
+        numItens +
+        "\n" +
+        "\nTotal de páginas de exibição: " +
+        numPaginas
     );
     pags = coletaPaginas();
-    console.log('pags:',pags);
+    console.log("pags:", pags);
     listaCodItens = await criarListaCodItens();
     itensUnidade = await listarItensUnidade();
-    if(vigencia.vigenciaPublicada) {
-      saveCSVToFile(itensUnidade, `./cache/Itens Uruguaiana - Pregão ${numCompra}-${anoCompra}.csv`)
+    if (vigencia.vigenciaPublicada) {
+      saveCSVToFile(
+        itensUnidade,
+        `./cache/itens-${participante.id}-pregao_${numCompra}-${anoCompra}.csv`
+      );
     } else {
-      console.error("*** Não foi possível listar os itens da unidade. Vigência da ata ainda não publicada.");
+      console.error(
+        "*** Não foi possível listar os itens da unidade. Vigência da ata ainda não publicada."
+      );
     }
-
   })
   .catch(console.error);
 
@@ -161,7 +248,7 @@ function coletaPaginas() {
       nPag = i + 1;
       arrPags[
         i
-      ] = `${BASE_URL}${urlParts[0]}${anoCompra}${urlParts[1]}${nPag}${urlParts[2]}${uasg}${urlParts[3]}${uasg}${urlParts[4]}${modCompra}${urlParts[5]}${anoCompra}${urlParts[6]}${numCompra}${urlParts[7]}${numCompra}`;
+      ] = `${BASE_URL}${urlParts[0]}${anoCompra}${urlParts[1]}${nPag}${urlParts[2]}${uasgGestora}${urlParts[3]}${uasgGestora}${urlParts[4]}${modCompra}${urlParts[5]}${anoCompra}${urlParts[6]}${numCompra}${urlParts[7]}${numCompra}`;
     }
   }
 
@@ -189,19 +276,18 @@ async function criarListaCodItens() {
 
 async function getData(url) {
   const browser = await puppeteer.launch({
-    ignoreHTTPSErrors: true,
     headless: "new",
+    args: ["--ignore-certificate-errors"],
   });
   const page = await browser.newPage();
-  await page.goto(url, { waitUntil: "networkidle0", timeout: 0});
+  await page.setBypassCSP(true);
+  await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
   const data = await page.content();
   await browser.close();
   return data;
 }
 
-async function carregaDadosEdital() {
-
-}
+// async function carregaDadosEdital() {}
 
 async function listarItensUnidade() {
   let url, content;
@@ -230,21 +316,22 @@ async function listarItensUnidade() {
         });
         if (tipoMaterial == "Serviço") objFornecimento.marca = "Não se aplica";
       }
-      
+
       let vigAtaIni = $(
-         '[name="itemAtaSRP.resultado.dataInicioVigenciaAta"]'
+        '[name="itemAtaSRP.resultado.dataInicioVigenciaAta"]'
       ).attr("value");
 
-      
       let vigAtafim = $(
         '[name="itemAtaSRP.resultado.dataFimVigenciaAta"]'
       ).attr("value");
 
-      vigAtaIni = typeof(vigAtaIni) == "undefined" ? vigencia.dataIniVigencia : vigAtaIni;
-      vigAtafim = typeof(vigAtafim) == "undefined" ? vigencia.dataFimVigencia : vigAtafim;
+      vigAtaIni =
+        typeof vigAtaIni == "undefined" ? vigencia.dataIniVigencia : vigAtaIni;
+      vigAtafim =
+        typeof vigAtafim == "undefined" ? vigencia.dataFimVigencia : vigAtafim;
 
       if (vigAtaIni.length > 0 || vigencia.vigenciaPublicada) {
-        if(!vigencia.vigenciaPublicada){
+        if (!vigencia.vigenciaPublicada) {
           vigencia.dataIniVigencia = vigAtaIni;
           vigencia.dataFimVigencia = vigAtafim;
           vigencia.vigenciaPublicada = true;
@@ -262,12 +349,15 @@ async function listarItensUnidade() {
         );
 
         // Confere se a unidade é participante do item no pregão
-        if (content.data.includes("158503 -") || content.data.includes("158127 -")) {
+        if (
+          content.data.includes(`${participante.uasg} -`) ||
+          content.data.includes(`${uasgGestora} -`)
+        ) {
           let data = await getData(url);
-          if (data.includes("Uruguaiana/RS")) {
+          if (data.includes(participante.localidade)) {
             let tmp = [];
             let qtdUnidade = "";
-            tmp = data.split("<td>89516 - Uruguaiana/RS</td>");
+            tmp = data.split(`<td>${participante.localEntrega}</td>`);
             tmp = tmp[1].split('<td class="numero">');
             tmp = tmp[1].split("</td>");
             qtdUnidade = tmp[0];
@@ -275,7 +365,7 @@ async function listarItensUnidade() {
             let objItem = {
               numCompra: numCompra,
               anoCompra: anoCompra,
-              uasg: uasg,
+              uasg: uasgGestora,
               iniVigencia: vigencia.dataIniVigencia,
               fimVigencia: vigencia.dataFimVigencia,
               numItem: numItem,
@@ -291,7 +381,7 @@ async function listarItensUnidade() {
             lista.push(objItem);
           }
         } else {
-          console.log('Item: ', numItem);
+          console.log("Item: ", numItem);
         }
       }
     }
