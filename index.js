@@ -80,13 +80,13 @@ const participantes = [
   },
 ];
 
-const idParticipante = "panambi";
+const idParticipante = "uruguaiana";
 const uasgGestora = "158127";
 const modCompra = "5";
-const numCompra = "90011";
-const anoCompra = "2024";
-const valIni = "30/04/2025";
-const valFim = "30/04/2026";
+const numCompra = "90038";
+const anoCompra = "2025";
+const valIni = "31/10/2025";
+const valFim = "31/10/2026";
 
 const participante = participantes.filter((p) => p.id == idParticipante)[0];
 
